@@ -13,6 +13,8 @@ use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+date_default_timezone_set('Asia/Jakarta');
+
 class adminController extends Controller
 {
     public function home(){ 
@@ -46,7 +48,8 @@ class adminController extends Controller
         $tgl = date('Ymdhis');
         $mem = Member::all();
         $out = Outlet::all();
-        return view('admin.transaksi', compact('get','tgl','mem','out'));
+        $pak = Paket::all();
+        return view('admin.transaksi', compact('get','tgl','mem','out','pak'));
     }
 
     public function tambahPaket(r $r){
@@ -168,13 +171,38 @@ class adminController extends Controller
             "kode_invoice" => $r->kode_invoice,
             "id_outlet" => $r->id_outlet,
             "id_member" => $r->id_member,
-            "tgl" => $r->tgl,
+            "tgl" => date('Y-m-d'),
             "batas_waktu" => $r->batas_waktu,
             "biaya_tambahan" => $r->biaya_tambahan,
             "diskon" => $r->diskon,
             "pajak" => $r->pajak,
         ];
         if(Transaksi::create($data)){
+            return redirect('/admin/transaksi');
+        }
+    }
+
+    public function hapusTransaksi($id){
+        $get = Transaksi::find($id);
+        if($get->delete()){
+            return redirect('/admin/transaksi');
+        }
+    }
+
+    public function showTransaksi($id){
+        $get = Transaksi::findOrFail($id);
+        return response()->json(["transaksi" => $get, "pelanggan" => $get->pelanggan]);
+    }
+     
+    public function konfirmasiTransaksi(r $r, $id){
+        $data = [
+            "id_paket" => $r->id_paket,
+            "qty" => $r->qty,
+            "keterangan" => $r->keterangan,
+        ];
+
+        $cek = detailTransaksi::create($data);
+        if($cek){
             return redirect('/admin/transaksi');
         }
     }

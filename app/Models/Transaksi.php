@@ -24,11 +24,10 @@ class Transaksi extends Model
     ];
 
     public function pelanggan(){
-        return $this->belongsTo(Member::class, 'id');
+        return $this->belongsTo(Member::class, 'id_member');
     }
 
     public function outlet(){
-        return $this->belongsTo(Outlet::class, 'id');
+        return $this->belongsTo(Outlet::class, 'id_outlet');
     }
-
 }

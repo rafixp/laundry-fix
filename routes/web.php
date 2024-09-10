@@ -53,3 +53,6 @@ Route::post('/admin/user/tambah', [adminController::class, 'tambahUser']);
 Route::get('/admin/user/hapus/{id}', [adminController::class, 'hapusUser']);
 
 Route::post('/admin/transaksi/tambah', [adminController::class, 'tambahTransaksi']);
+Route::get('/admin/transaksi/hapus/{id}', [adminController::class, 'hapusTransaksi']);
+Route::get('/admin/transaksi/show/{id}', [adminController::class, 'showTransaksi']);
+Route::post('/admin/transaksi/konfirmasi/{id}', [adminController::class, 'konfirmasiTransaksi']);
