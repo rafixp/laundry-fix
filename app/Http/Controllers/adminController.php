@@ -11,6 +11,7 @@ use App\Models\Outlet;
 use App\Models\detailTransaksi;
 use App\Models\Transaksi;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class adminController extends Controller
 {
@@ -34,8 +35,18 @@ class adminController extends Controller
         return view('admin.outlet', compact('get'));
     }
 
-    public function pengguna(){
-        return view('admin.pengguna');
+    public function user(){
+        $get = User::all();
+        $out = Outlet::all();
+        return view('admin.user', compact('get','out'));
+    }
+
+    public function transaksi(){
+        $get = Transaksi::latest()->get();
+        $tgl = date('Ymdhis');
+        $mem = Member::all();
+        $out = Outlet::all();
+        return view('admin.transaksi', compact('get','tgl','mem','out'));
     }
 
     public function tambahPaket(r $r){
@@ -58,6 +69,12 @@ class adminController extends Controller
         }
     }
 
+    public function hapusPaket($id){
+        $get = Paket::find($id);
+        if($get->delete()){
+            return redirect('/admin/paket');
+        }
+    }
     public function tambahOutlet(r $r){
         $data = $r->all();
         if(Outlet::create($data)){
@@ -73,6 +90,13 @@ class adminController extends Controller
         $get = Outlet::findOrFail($id);
         $data = $r->all();
         if($get->update($data)){
+            return redirect('/admin/outlet');
+        }
+    }
+
+    public function hapusOutlet($id){
+        $get = Outlet::find($id);
+        if($get->delete()){
             return redirect('/admin/outlet');
         }
     }
@@ -102,6 +126,56 @@ class adminController extends Controller
         $get = Member::findOrFail($id);
         if($get->delete()){
             return redirect('/admin/member');
+        }
+    }
+
+    public function showUser($id){
+        $get = User::find($id);
+        return response()->json($get);
+    }
+
+    public function editUser(r $r, $id){
+        $get = User::find($id);
+        $data = [
+            "name" => $r->name,
+            "email" => $r->email,
+            "password" => $r->password ? Hash::make($r->password) : $get->password,
+            "role" => $r->role,
+            "id_outlet" => $r->id_outlet,
+        ];
+
+        if($get->update($data)){
+            return redirect('/admin/user');
+        }
+    }
+
+    public function tambahUser(r $r){
+        $data = $r->all();
+        if(User::create($data)){
+            return redirect('/admin/user');
+        }
+    }
+
+    public function hapusUser($id){
+        $get = User::find($id);
+        if($get->delete()){
+            return redirect('/admin/user');
+        }
+    }
+
+    public function tambahTransaksi(r $r){
+        $data = [
+            "kode_invoice" => $r->kode_invoice,
+            "id_outlet" => $r->id_outlet,
+            "id_member" => $r->id_member,
+            "tgl" => $r->tgl,
+            "batas_waktu" => $r->batas_waktu,
+            "biaya_tambahan" => $r->biaya_tambahan,
+            "diskon" => $r->diskon,
+            "pajak" => $r->pajak,
+        ];
+        if(Transaksi::create($data)){
+            return redirect('/admin/transaksi');
         }
     }
 }

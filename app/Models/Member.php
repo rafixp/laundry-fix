@@ -15,4 +15,8 @@ class Member extends Model
         'jenis_kelamin',
         'tlp',
     ];
+
+    public function transaksi(){
+        return $this->hasMany(Transaksi::class);
+    }
 }

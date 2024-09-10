@@ -12,6 +12,7 @@
                 <thead>
                     <th>No.</th>
                     <th>Nama Paket</th>
+                    <th>Outlet</th>
                     <th>Jenis</th>
                     <th>Harga</th>
                     <th>Aksi</th>
@@ -22,6 +23,7 @@
                         <tr>
                             <td><?= $i++ ?></td>
                             <td>{{$a->nama_paket}}</td>
+                            <td>{{$a->outlet->nama}}</td>
                             <td>{{$a->jenis}}</td>
                             <td>{{$a->harga}}</td>
                             <td>

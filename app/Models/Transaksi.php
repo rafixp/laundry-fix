@@ -23,11 +23,8 @@ class Transaksi extends Model
         'dibayar',
     ];
 
-    public function outlet(){
-        return $this->belongsTo(Outlet::class);
+    public function pelanggan(){
+        return $this->belongsTo(Member::class, 'id');
     }
 
-    public function member(){
-        return $this->belongsTo(Member::class);
-    }
 }
