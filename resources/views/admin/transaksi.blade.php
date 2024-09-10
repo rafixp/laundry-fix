@@ -12,6 +12,7 @@
                     <th>No.</th>
                     <th>Kode Invoice</th>
                     <th>Nama Member</th>
+                    <th>Outlet</th>
                     <th>Tanggal Masuk</th>
                     <th>Status</th>
                     <th>Dibayar</th>
@@ -24,6 +25,7 @@
                         <td><?= $i++?>.</td>
                         <td>{{$a->kode_invoice}}</td>
                         <td>{{$a->pelanggan}}</td>
+                        <td>{{$a->outlet}}</td>
                         <td>{{$a->tgl}}</td>
                         <td>{{$a->status}}</td>
                         <td>{{$a->dibayar}}</td>
@@ -109,11 +111,11 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="/admin/transaksi/tambah" method="post">
+                <form method="post">
                     @csrf
                     <div class="form-group">
                         <label>Kode Invoice</label>
-                        <input type="text" name="kode_invoice" class="form-control" value="LND{{$tgl}}" readonly>
+                        <input type="text" name="kode_invoice" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Outlet</label>
@@ -148,7 +150,8 @@
                     <div class="form-group">
                         <label>Diskon</label>
                         <input type="number" name="diskon" class="form-control">
-                    </div><div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label>Pajak</label>
                         <input type="number" name="pajak" class="form-control">
                     </div>
